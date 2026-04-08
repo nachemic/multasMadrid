@@ -10,7 +10,7 @@ from unittest.mock import MagicMock, patch
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
-from multasMadrid.cache import Cache, CacheError, CacheURL
+from madridFines.cache import Cache, CacheError, CacheURL
 
 DATA_DIR = Path(__file__).parent / "data"
 DATA_DIR.mkdir(parents=True, exist_ok=True)
@@ -82,7 +82,7 @@ class TestCacheURL(unittest.TestCase):
     def _url_hash(self, url):
         return hashlib.md5(url.encode("utf-8")).hexdigest()
 
-    @patch("multasMadrid.cache.requests.get")
+    @patch("madridFines.cache.requests.get")
     def test_get_downloads_and_caches(self, mock_get):
         mock_response = MagicMock()
         mock_response.text = self.TEST_CONTENT
@@ -94,7 +94,7 @@ class TestCacheURL(unittest.TestCase):
         self.assertEqual(result, self.TEST_CONTENT)
         self.assertTrue(self.cache.exists(self.TEST_URL))
 
-    @patch("multasMadrid.cache.requests.get")
+    @patch("madridFines.cache.requests.get")
     def test_get_uses_cache(self, mock_get):
         name = self._url_hash(self.TEST_URL)
         self.cache.cache_dir.joinpath(name).write_text(self.TEST_CONTENT, encoding="utf-8")
@@ -102,7 +102,7 @@ class TestCacheURL(unittest.TestCase):
         self.assertEqual(result, self.TEST_CONTENT)
         mock_get.assert_not_called()
 
-    @patch("multasMadrid.cache.requests.get")
+    @patch("madridFines.cache.requests.get")
     def test_get_raises_on_download_error(self, mock_get):
         import requests as req_module
 
