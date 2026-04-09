@@ -94,9 +94,3 @@ python -m build
 ```
 
 Los archivos generados se guardan en `dist/`, incluyendo el fichero `.whl` pedido como requisito en enunciado.ipynb.
-
-## Observaciones
-
-- El proyecto usa una caché local para evitar descargas repetidas.
-- `.venv/`, `build/` y `*.egg-info/` son carpetas y archivos generados localmente.
-- El fichero importante para la entrega instalable es el `.whl` generado en `dist/`.
