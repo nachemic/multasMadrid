@@ -1,23 +1,31 @@
 ﻿# traficFines
 
-Proyecto académico de Programación Avanzada en Python para analizar multas de tráfico del Ayuntamiento de Madrid.
+Trabajo Final de Programación Avanzada en Python para analizar multas de tráfico del Ayuntamiento de Madrid.
 
-## Contenido de la entrega
+## Contenido del proyecto
 
-- Paquete Python `traficFines/` con los módulos `cache.py` y `madridFines.py`.
-- Módulo de compatibilidad `traficFines.py` para no romper imports anteriores.
-- Notebook de la etapa 1: `notebooks/analisis.ipynb`.
-- Notebook de ejemplos de uso: `notebooks/ejemplos.ipynb`.
+- Paquete Python `traficFines/`.
+- Notebook de la Etapa 1 en `enunciado/enunciado.ipynb`.
+- Notebook de ejemplos y validación en `notebooks/ejemplos.ipynb`.
 - Tests automáticos en `tests/`.
+- Distribuciones generadas en `dist/`.
+
+## Estructura del paquete
+
+Dentro del paquete `traficFines/` están los módulos principales:
+
+- `cache.py`: clases `Cache`, `CacheURL` y excepción `CacheError`.
+- `traficFines.py`: implementación principal de `MadridFines`, `MadridError` y `get_url`.
+- `madridFines.py`: alias del módulo anterior para ajustarse al nombre que aparece en el enunciado.
 
 ## Requisitos
 
-- Python 3.14 o compatible.
-- Dependencias del proyecto indicadas en `requirements.txt`.
+- Python 3.10 o superior.
+- Dependencias indicadas en `requirements.txt`.
 
 ## Instalación
 
-Instalar las dependencias del proyecto:
+Instalar las dependencias:
 
 ```bash
 python -m pip install -r requirements.txt
@@ -29,7 +37,7 @@ Instalar el paquete en el entorno actual:
 python -m pip install .
 ```
 
-Si se prefiere trabajar en modo desarrollo:
+Si se quiere trabajar en modo desarrollo:
 
 ```bash
 python -m pip install -e .
@@ -37,7 +45,7 @@ python -m pip install -e .
 
 ## Uso básico
 
-Ejemplo mínimo de uso del paquete:
+Ejemplo mínimo:
 
 ```python
 from traficFines import MadridFines
@@ -50,41 +58,45 @@ print(mf.fines_calification())
 print(mf.total_payment())
 ```
 
-Si se quiere importar el módulo descrito literalmente en el enunciado, también está disponible como `traficFines.madridFines`.
+Tambien puede importarse el módulo con el nombre que aparece en el enunciado:
+
+```python
+from traficFines.madridFines import MadridFines
+```
 
 ## Notebooks
 
-- `notebooks/analisis.ipynb`: preprocesamiento y análisis exploratorio de la etapa 1.
-- `notebooks/ejemplos.ipynb`: ejemplos de uso y validación manual de las clases del paquete.
+- `enunciado/enunciado.ipynb`: desarrollo de la Etapa 1 con descarga, limpieza y preprocesamiento.
+- `notebooks/ejemplos.ipynb`: ejemplos de uso y validación manual de las clases y excepciones.
 
 ## Tests
 
-Ejecutar la batería de tests:
+Ejecutar los tests:
 
 ```bash
-python -m unittest discover tests/
+python -m unittest discover tests
 ```
 
-Medir cobertura:
+Opcionalmente, para medir cobertura:
 
 ```bash
-python -m coverage run --source=traficFines -m unittest discover tests/
+python -m coverage run --source=traficFines -m unittest discover tests
 python -m coverage report -m
 ```
 
 ## Generación del wheel
 
-Para construir el paquete distribuible `.whl`:
+Para generar el paquete distribuible:
 
 ```bash
 python -m pip install build
 python -m build
 ```
 
-Los ficheros generados se guardarán en el directorio `dist/`.
+Los archivos generados se guardan en `dist/`, incluyendo el fichero `.whl` pedido como requisito en enunciado.ipynb.
 
 ## Observaciones
 
-- El proyecto usa una caché local para las descargas del portal de datos abiertos.
-- El entorno virtual `.venv/` es solo local y no forma parte de la entrega.
-- Para la corrección, basta con disponer del código, los notebooks, los tests y el paquete generado.
+- El proyecto usa una caché local para evitar descargas repetidas.
+- `.venv/`, `build/` y `*.egg-info/` son carpetas y archivos generados localmente.
+- El fichero importante para la entrega instalable es el `.whl` generado en `dist/`.
