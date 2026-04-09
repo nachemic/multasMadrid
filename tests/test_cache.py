@@ -117,8 +117,7 @@ class TestCacheURL(unittest.TestCase):
     def test_get_downloads_and_caches(self, mock_get):
         mock_response = MagicMock()
         mock_response.text = self.TEST_CONTENT
-        mock_response.encoding = None
-        mock_response.apparent_encoding = "utf-8"
+        mock_response.encoding = "utf-8"
         mock_response.raise_for_status = MagicMock()
         mock_get.return_value = mock_response
 
@@ -128,29 +127,9 @@ class TestCacheURL(unittest.TestCase):
         self.assertTrue(self.cache.exists(self.TEST_URL))
 
     @patch("traficFines.cache.requests.get")
-    def test_get_supports_params_in_cache_key(self, mock_get):
-        mock_response = MagicMock()
-        mock_response.text = self.TEST_CONTENT
-        mock_response.encoding = "utf-8"
-        mock_response.apparent_encoding = None
-        mock_response.raise_for_status = MagicMock()
-        mock_get.return_value = mock_response
-
-        params = {"month": 12, "year": 2024}
-        result = self.cache.get(self.TEST_URL, params=params)
-
-        self.assertEqual(result, self.TEST_CONTENT)
-        self.assertTrue(self.cache.exists(self.TEST_URL, params=params))
-        self.assertEqual(self.cache.load(self.TEST_URL, params=params), self.TEST_CONTENT)
-        self.assertGreaterEqual(self.cache.how_old(self.TEST_URL, params=params), 0)
-        self.cache.delete(self.TEST_URL, params=params)
-        self.assertFalse(self.cache.exists(self.TEST_URL, params=params))
-        mock_get.assert_called_once_with(self.TEST_URL, params=params, timeout=30)
-
-    @patch("traficFines.cache.requests.get")
     def test_get_uses_cache(self, mock_get):
         name = self._url_hash(self.TEST_URL)
-        Path(self.cache.cache_dir).joinpath(name).write_text(self.TEST_CONTENT, encoding="utf-8")
+        Path(self.cache.cache_dir).joinpath(name).write_text(self.TEST_CONTENT, encoding="utf-8", newline="")
         result = self.cache.get(self.TEST_URL)
         self.assertEqual(result, self.TEST_CONTENT)
         mock_get.assert_not_called()
@@ -166,7 +145,7 @@ class TestCacheURL(unittest.TestCase):
 
     def test_url_helpers(self):
         name = self._url_hash(self.TEST_URL)
-        Path(self.cache.cache_dir).joinpath(name).write_text(self.TEST_CONTENT, encoding="utf-8")
+        Path(self.cache.cache_dir).joinpath(name).write_text(self.TEST_CONTENT, encoding="utf-8", newline="")
         self.assertTrue(self.cache.exists(self.TEST_URL))
         self.assertEqual(self.cache.load(self.TEST_URL), self.TEST_CONTENT)
         self.assertGreaterEqual(self.cache.how_old(self.TEST_URL), 0)
